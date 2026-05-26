@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Flashcard Forge</title>
+    <link rel="stylesheet" href="stylereg.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Войти в аккаунт</h1>
+        <form action="/api/login" method="POST">
+            <div class="form-group">
+                <label>Никнейм</label>
+                <input type="text" name="username" required placeholder="Введите никнейм" autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" name="password" required placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <button type="submit">Войти</button>
+        </form>
+        
+        <p><a href="register.html" class="back-link">Зарегистрироваться</a></p>
+        <p><a href="/" class="back-link">Вернуться на главную</a></p>
+    </div>
+</body>
+</html>
