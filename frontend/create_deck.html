@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать колоду - Flashcard Forge</title>
+    <link rel="stylesheet" href="/create_deck.css">
+</head>
+<body>
+
+    <header class="header-panel">
+        <a href="/dashboard" class="btn profile-btn">Назад на главную</a>
+    </header>
+
+    <main class="dashboard-container form-container">
+        <h1 class="dashboard-title">Новая колода</h1>
+        
+        <form action="/api/decks/create" method="POST" class="deck-form">
+            
+            <div class="form-group">
+                <label for="title">Название колоды</label>
+                <input type="text" id="title" name="title" class="form-control" placeholder="Введите название..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <textarea id="description" name="description" class="form-control" placeholder="Введите краткое описание..."></textarea>
+            </div>
+
+            <label class="checkbox-group">
+                <input type="checkbox" id="is_private" name="is_private">
+                <span>Сделать колоду приватной (будет видна только мне)</span>
+            </label>
+
+            <button type="submit" class="btn submit-deck-btn">Создать колоду</button>
+        </form>
+    </main>
+
+</body>
+</html>
