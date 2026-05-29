@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд - Flashcard Forge</title>
+    <link rel="stylesheet" href="dashboard.css?v=1">
+</head>
+<body>
+
+    <div class="video-bg">
+        <video autoplay muted playsinline>
+            <source src="compressed_14846846_1920_1080_30fps.mp4" type="video/mp4">
+            Ваш браузер не поддерживает тег video.
+        </video>
+    </div>
+
+    <header class="header-panel">
+        <a href="/profile" class="btn profile-btn">👤Профиль пользователя</a>
+    </header>
+
+    <main class="dashboard-container">
+        <h1 class="dashboard-title">Flash-учёба</h1>
+        
+        <nav class="dashboard-nav">
+            <a href="/decks/create" class="btn">Создать колоду</a>
+            <a href="/decks/my" class="btn">Ваши колоды</a>
+            <a href="/decks/public" class="btn">Общие кланы</a>
+            <a href="/decks/search" class="btn">Искать колоду</a>
+            <a href="/user/stats" class="btn">Статистика пользователя</a>
+        </nav>
+    </main>
+
+</body>
+</html>

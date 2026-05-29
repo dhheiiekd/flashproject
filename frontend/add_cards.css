@@ -1,0 +1,177 @@
+html, body {
+    background-color: #050b14 !important; 
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+/* ШАПКА И ВЕРХНЯЯ КНОПКА */
+.header-panel {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    background-color: transparent; 
+    text-align: right;
+}
+
+.profile-btn {
+    display: inline-block;
+    width: auto;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    padding: 10px 18px;
+    background-color: rgba(10, 10, 15, 0.7); 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+}
+
+/* ГЛАВНЫЙ КОНТЕЙНЕР И НЕОНОВЫЙ ЗАГОЛОВОК*/
+.dashboard-container {
+    position: relative;
+    z-index: 2;
+    max-width: 500px; 
+    margin: 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.dashboard-title {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-size: 32px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 191, 255, 0.5); 
+}
+
+/* ==========================================================================
+   ФОРМА И ТЕКСТОВЫЕ ПОЛЯ (TEXTAREA)
+   ========================================================================== */
+.deck-form {
+    background-color: rgba(18, 28, 46, 0.85); 
+    padding: 30px; 
+    border-radius: 12px; 
+    border: 1px solid rgba(23, 183, 208, 0.3);
+    box-sizing: border-box;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #26e6ff; 
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    background-color: rgba(10, 10, 15, 0.8);
+    border: 1px solid rgba(23, 183, 208, 0.4);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px; /* Предотвращает нежелательный зум на смартфонах */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #26e6ff;
+    box-shadow: 0 0 10px rgba(23, 183, 208, 0.5);
+}
+
+.form-control::placeholder {
+    color: #475569;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit; /* Сохраняет единый шрифт в полях */
+}
+
+/* ==========================================================================
+   ГЛАВНАЯ КНОПКА ДОБАВЛЕНИЯ КАРТЫ
+   ========================================================================== */
+.btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 20px;
+    background-color: rgba(18, 28, 46, 0.85); 
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 1px solid rgba(23, 183, 208, 0.3);
+    transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-card-btn {
+    margin-bottom: 0; 
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: rgba(23, 183, 208, 0.9); 
+    border-color: #26e6ff;
+    box-shadow: 0 0 15px rgba(23, 183, 208, 0.6); 
+}
+
+.btn:active {
+    transform: scale(0.98); /* Эффект продавливания при тапе на телефоне */
+}
+
+/* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА ДЛЯ ТЕЛЕФОНОВ (Экраны до 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-panel {
+        text-align: center; /* Центрируем верхнюю кнопку на мобильных телефонах */
+        padding: 15px 10px;
+    }
+
+    .profile-btn {
+        display: block;
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+        padding: 12px 18px;
+    }
+
+    .dashboard-container {
+        margin: 10px auto 40px auto;
+        padding: 0 15px; /* Защитные отступы, чтобы форма не прилипала к бокам экрана */
+    }
+
+    .dashboard-title {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    .deck-form {
+        padding: 20px 15px; /* Сужаем поля формы внутри карточки, давая тексту больше пространства */
+    }
+
+    .form-control {
+        padding: 12px;
+    }
+}

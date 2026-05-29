@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои Колоды - Flashcard Forge</title>
+    <link rel="stylesheet" href="/my_decks.css">
+</head>
+<body>
+
+    <header class="header-panel">
+        <a href="/dashboard" class="btn profile-btn">В меню</a>
+        <a href="/decks/create" class="btn forge-btn">+ Выковать колоду</a>
+    </header>
+
+    <main class="dashboard-container">
+        <h1 class="dashboard-title">Ваши кузнечные колоды</h1>
+        
+        <div id="decksList" class="decks-list"></div>
+        
+        <div id="noDecks" class="no-decks-message">
+            У вас пока нет созданных колод. Самое время выковать первую!
+        </div>
+    </main>
+
+    <script src="/my_decks.js"></script>
+</body>
+</html>

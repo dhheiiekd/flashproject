@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Колода Готова! - Flashcard Forge</title>
+    <link rel="stylesheet" href="/deck_preview.css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+    <header class="header-panel">
+        <a href="/dashboard" class="btn profile-btn">В меню</a>
+    </header>
+
+    <main class="dashboard-container">
+        <h1 class="dashboard-title">Колода выкована!</h1>
+        <p class="dashboard-subtitle">
+            Выберите любую карту, чтобы перейти в Кузницу карточек
+        </p>
+        
+        <div class="bounce-cards-container" id="cardsContainer"></div>
+
+        <div class="action-area">
+            <a id="viewAllBtn" href="#" class="btn action-btn">
+                👁 Показать все карточки в колоде
+            </a>
+        </div>
+    </main>
+
+    <script src="/deck_preview.js?"></script>
+</body>
+</html>

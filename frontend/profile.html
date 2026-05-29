@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личная Кузница - Flashcard Forge</title>
+    <link rel="stylesheet" href="stylereg.css">
+    <style>
+        .user-badge {
+            background: #334155;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: #f8fafc;
+            border: 1px solid #475569;
+        }
+        .user-badge span {
+            color: #38bdf8;
+            font-weight: bold;
+        }
+        .hidden-form {
+            display: none;
+            text-align: left;
+        }
+        .toggle-btn {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-top: 10px;
+        }
+        .toggle-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .nav-links {
+            margin-top: 25px;
+            border-top: 1px solid #475569;
+            padding-top: 10px;
+        }
+        .error-message {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+        }
+        .success-message {
+            color: #22c55e;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ваш профиль</h1>
+
+        <div id="error-block" class="error-message"></div>
+        <div id="success-block" class="success-message"></div>
+
+        <div class="user-badge">
+            Кузнец: <span id="current-username">Загрузка...</span>
+        </div>
+
+        <button type="button" id="show-edit-btn" onclick="toggleEditForm()">Изменить никнейм или пароль</button>
+
+        <form id="edit-profile-form" class="hidden-form">
+            <div class="form-group">
+                <label>Новый никнейм</label>
+                <input type="text" id="input-username" required placeholder="Введите новый никнейм">
+            </div>
+            <div class="form-group">
+                <label>Новый пароль (оставьте пустым, если не меняете)</label>
+                <input type="password" id="input-password" placeholder="••••••••">
+            </div>
+            <button type="submit">Перековать данные</button>
+            <button type="button" class="toggle-btn" onclick="toggleEditForm()">Отмена</button>
+        </form>
+        
+        <div class="nav-links">
+            <p><a href="/dashboard" class="back-link">Вернуться в Дашборд</a></p>
+            <p><a href="/" class="back-link">На главную</a></p>
+        </div>
+    </div>
+
+    <script>
+        const errorBlock = document.getElementById('error-block');
+        const successBlock = document.getElementById('success-block');
+
+        function toggleEditForm() {
+            const badge = document.querySelector('.user-badge');
+            const showBtn = document.getElementById('show-edit-btn');
+            const form = document.getElementById('edit-profile-form');
+            
+            errorBlock.style.display = 'none';
+            successBlock.style.display = 'none';
+
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+                badge.style.display = 'block';
+                showBtn.style.display = 'block';
+            } else {
+                form.style.display = 'block';
+                badge.style.display = 'none';
+                showBtn.style.display = 'none';
+            }
+        }
+
+        // Загрузка актуальных данных пользователя при старте страницы
+        async function loadUserData() {
+            try {
+                const response = await fetch('/api/user/me');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('current-username').textContent = data.username;
+                    document.getElementById('input-username').value = data.username;
+                } else {
+                    document.getElementById('current-username').textContent = 'Ошибка загрузки';
+                }
+            } catch (err) {
+                document.getElementById('current-username').textContent = 'Ошибка сети';
+            }
+        }
+
+        // Перехват отправки формы и отправка в JSON формате
+        document.getElementById('edit-profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            errorBlock.style.display = 'none';
+            successBlock.style.display = 'none';
+
+            const username = document.getElementById('input-username').value;
+            const password = document.getElementById('input-password').value;
+
+            try {
+                const response = await fetch('/api/user/update-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    successBlock.textContent = 'Профиль успешно перекован!';
+                    successBlock.style.display = 'block';
+                    document.getElementById('input-password').value = ''; // Очищаем поле пароля
+                    
+                    // Обновляем отображаемое имя и закрываем форму
+                    await loadUserData();
+                    setTimeout(toggleEditForm, 1000); 
+                } else {
+                    const errorText = await response.text();
+                    errorBlock.textContent = errorText || 'Произошла ошибка при обновлении';
+                    errorBlock.style.display = 'block';
+                }
+            } catch (err) {
+                errorBlock.textContent = 'Не удалось связаться с сервером';
+                errorBlock.style.display = 'block';
+            }
+        });
+
+        // Инициализация загрузки данных кузнеца
+        loadUserData();
+    </script>
+</body>
+</html>

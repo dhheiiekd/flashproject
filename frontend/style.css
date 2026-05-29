@@ -1,10 +1,16 @@
-body {
-    background-color: #3b82f6; 
-    color: white; 
-    padding: 20px 50px;
-    font-family: sans-serif;
+html, body, :root {
+    background-color: #000000 !important;
     margin: 0;
+    padding: 0;
+    width: 100%;
+    color: white; 
+    font-family: sans-serif;
     line-height: 1.6;
+}
+
+body {
+    padding: 20px 30px;
+    box-sizing: border-box;
 }
 
 .header-section {
@@ -12,7 +18,7 @@ body {
     flex-direction: column; 
     align-items: center;    
     text-align: center;
-    margin-bottom: 70px;    
+    margin-bottom: 30px; 
 }
 
 .top-logo {
@@ -28,14 +34,49 @@ h1 {
     margin: 0;
 }
 
+/* Кнопки авторизации */
+.auth-section {
+    margin-bottom: 40px; 
+    display: flex;
+    flex-direction: row;      
+    justify-content: center;  
+    gap: 20px;                
+    text-align: center;
+}
+
+.auth-btn {
+    color: white;
+    font-size: 1.1rem;
+    text-decoration: none;
+    border: 2px solid white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: inline-block;
+    min-width: 140px; 
+    box-sizing: border-box;
+}
+
+.auth-btn:hover, .auth-btn:active {
+    background-color: white;
+    color: #000000;           
+}
+
+/* Контейнер с контентом */
 .main-container {
     display: flex;
     gap: 40px; 
     align-items: center;
+    margin-bottom: 50px; 
 }
 
 .text-content {
     width: 45%;
+}
+
+.text-content p {
+    font-size: 16px;
+    margin-bottom: 16px;
 }
 
 .image-content {
@@ -44,25 +85,57 @@ h1 {
 
 .image-content img {
     display: block;
-    max-width: 80%;
+    max-width: 100%; 
     height: auto;
 }
 
-.auth-section {
-    margin-top: 50px;
-    text-align: center;
-}
+/* ==========================================================================
+   ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ СМАРТФОНОВ
+   ========================================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 15px; 
+    }
 
-.register-link {
-    color: white;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border: 2px solid white;
-    padding: 10px 25px;
-    border-radius: 8px;
-    transition: background-color 0.3s;
-}
+    h1 {
+        font-size: 20px; /* Заголовок уменьшается согласно вашей исходной логике */
+    }
 
-.register-link:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    /* Уменьшаем обычный текст описания на мобильных */
+    .text-content p {
+        font-size: 14px; 
+    }
+
+    .auth-section {
+        flex-direction: column !important; 
+        gap: 12px;              
+    }
+
+    .auth-btn {
+        width: 100% !important;            
+        max-width: 280px;       
+        margin: 0 auto;         
+        padding: 14px 20px;     
+    }
+
+    /* Картинка и текст встают друг под друга */
+    .main-container {
+        flex-direction: column !important; 
+        gap: 25px;
+    }
+
+    .text-content {
+        width: 100% !important;            
+        text-align: center;     
+    }
+
+    .image-content {
+        width: 100% !important;            
+        display: flex;
+        justify-content: center;
+    }
+
+    .image-content img {
+        max-width: 85% !important; /* Делаем картинку большой */
+    }
 }

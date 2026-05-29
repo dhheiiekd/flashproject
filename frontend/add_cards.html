@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление карточек - Flashcard Forge</title>
+    <link rel="stylesheet" href="/add_cards.css?">
+</head>
+<body>
+
+    <header class="header-panel">
+        <a href="/dashboard" class="btn profile-btn">Закончить создание</a>
+    </header>
+
+    <main class="dashboard-container form-container">
+        <h1 class="dashboard-title">Кузница карточек</h1>
+        
+        <form id="cardForm" method="POST" class="deck-form">
+            
+            <div class="form-group">
+                <label for="question">Лицевая сторона (Вопрос / Термин)</label>
+                <textarea id="question" name="question" class="form-control" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="answer">Обратная сторона (Ответ / Описание)</label>
+                <textarea id="answer" name="answer" class="form-control" required></textarea>
+            </div>
+
+            <button type="submit" class="btn submit-card-btn">+ Добавить карту в колоду</button>
+        </form>
+    </main>
+
+    <script>
+        // Этот скрипт берёт deck_id из строки браузера и на лету настраивает форму
+        const urlParams = new URLSearchParams(window.location.search);
+        const deckId = urlParams.get('deck_id');
+        
+        if (deckId) {
+            // Направляем форму на правильный бэкенд эндпоинт с нужным ID колоды
+            document.getElementById('cardForm').action = `/api/cards/create?deck_id=${deckId}`;
+        } else {
+            alert("Ошибка: ID колоды не найден в строке адреса!");
+        }
+    </script>
+</body>
+</html>

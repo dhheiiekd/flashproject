@@ -1,0 +1,146 @@
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+    background-color: #050b14; /* Подложка на случай, если видео долго грузится по 4G/5G */
+}
+
+.video-bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    backface-visibility: hidden; 
+    perspective: 1000;
+}
+
+
+/* ==========================================================================
+   ОФОРМЛЕНИЕ ДАШБОРДА 
+   ========================================================================== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #fff; 
+}
+
+/* Верхняя панель — теперь абсолютно прозрачная, без линий */
+.header-panel {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    background-color: transparent; 
+    border-bottom: none; 
+    text-align: right;
+}
+
+/* Главный контейнер дашборда */
+.dashboard-container {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    box-sizing: border-box; /* Чтобы паддинги не расширяли контейнер на телефонах */
+}
+
+/* Центрирование заголовка */
+.dashboard-title {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-size: 32px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 191, 255, 0.5); 
+}
+
+/* Контейнер для навигационных кнопок */
+.dashboard-nav {
+    display: block;
+}
+
+/* Базовый класс для основных кнопок  */
+.btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    padding: 16px 20px;
+    background-color: rgba(18, 28, 46, 0.85); 
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 1px solid rgba(23, 183, 208, 0.3); 
+    transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Эффект при наведении на основную кнопку */
+.btn:hover {
+    background-color: rgba(23, 183, 208, 0.9); 
+    border-color: #26e6ff;
+    box-shadow: 0 0 15px rgba(23, 183, 208, 0.6); 
+}
+
+/* Эффект при нажатии (идеально для тапа на телефоне) */
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Кнопка профиля в правом верхнем углу */
+.profile-btn {
+    display: inline-block;
+    width: auto;
+    margin-bottom: 0;
+    padding: 10px 18px;
+    background-color: rgba(10, 10, 15, 0.7); 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   АДАПТИВНАЯ ВЕРСТКА ДЛЯ МОБИЛЬНЫХ ТЕЛЕФОНОВ (Экраны до 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-panel {
+        text-align: center; /* Центрируем кнопку профиля сверху экрана смартфона */
+        padding: 15px 10px;
+    }
+
+    .profile-btn {
+        display: block;
+        width: 100%;
+        max-width: 280px; /* Чтобы на широких смартфонах она не растягивалась на весь экран */
+        margin: 0 auto;
+        padding: 12px 18px; /* Немного увеличиваем высоту для удобства тапа пальцем */
+        font-size: 15px;
+    }
+
+    .dashboard-container {
+        margin: 10px auto 40px auto; /* Уменьшаем верхний отступ, чтобы не скроллить вниз */
+        padding: 0 15px; /* Защитные поля по бокам, чтобы кнопки не липли к краям экрана */
+    }
+
+    .dashboard-title {
+        font-size: 26px; /* Слегка уменьшаем название проекта на мелких экранах */
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 14px 15px; /* Оптимальный размер кнопок меню под мобильный палец */
+        font-size: 15px;
+    }
+}
