@@ -38,7 +38,7 @@
         
         if (deckId) {
             // Направляем форму на правильный бэкенд эндпоинт с нужным ID колоды
-            document.getElementById('cardForm').action = /api/cards/create?deck_id=${deckId};
+            document.getElementById('cardForm').action = `/api/cards/create?deck_id=${deckId}`;
         } else {
             alert("Ошибка: ID колоды не найден в строке адреса!");
         }

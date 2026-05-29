@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обучение - Flashcard Forge</title>
+    <link rel="stylesheet" href="/play_deck.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+    <header class="header-panel">
+        <a href="/dashboard" class="btn back-btn">← В меню</a>
+        <div class="progress-text" id="progressText">Карточка 0 из 0</div>
+    </header>
+
+    <main class="player-container">
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+
+        <div class="card-scene">
+            <div class="flipping-card" id="flashcard">
+                <div class="card-face card-front">
+                    <div class="card-inner-border">
+                        <span class="badge">ВОПРОС</span>
+                        <p class="card-text" id="questionText">Загрузка...</p>
+                        <span class="hint-click">Нажмите, чтобы узнать ответ</span>
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-inner-border">
+                        <span class="badge answer-badge">ОТВЕТ</span>
+                        <p class="card-text" id="answerText">Загрузка...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-area" id="controlsArea">
+            <button class="btn verdict-btn forgot-btn" id="forgotBtn" disabled>❌ Не знаю</button>
+            <button class="btn verdict-btn knew-btn" id="knewBtn" disabled>✅ Знаю</button>
+        </div>
+
+        <div class="results-screen" id="resultsScreen" style="display: none;">
+            <h2 class="results-title">Результаты</h2>
+            <div class="score-badge" id="scoreBadge">0 / 0</div>
+            <p class="results-subtitle" id="resultsSubtitle">Отличный результат!</p>
+            <button class="btn restart-btn" onclick="window.location.reload()">Пройти ещё раз</button>
+        </div>
+    </main>
+
+    <script src="/play_deck.js"></script>
+</body>
+</html>

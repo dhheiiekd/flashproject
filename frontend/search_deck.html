@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог колод - Flashcard Forge</title>
+    <link rel="stylesheet" href="/search_deck.css">
+</head>
+<body>
+
+    <header class="header-panel">
+        <a href="/dashboard" class="btn profile-btn">В меню</a>
+    </header>
+
+    <main class="dashboard-container">
+        <h1 class="dashboard-title">Глобальная библиотека колод</h1>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Поиск по названию колоды или теме...">
+        </div>
+
+        <div class="category-filters-container">
+            <span class="filters-label">Фильтр по темам:</span>
+            <div id="categoryTags" class="category-tags-list">
+                <button class="tag-btn active" data-id="">Все подряд</button>
+            </div>
+        </div>
+        
+        <div id="decksList" class="decks-list"></div>
+        
+        <div id="noDecks" class="no-decks-message">
+            Публичных колод по вашему запросу не найдено.
+        </div>
+    </main>
+
+    <script src="/search_deck.js"></script>
+</body>
+</html>

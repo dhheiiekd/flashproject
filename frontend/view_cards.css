@@ -1,0 +1,221 @@
+/* ==========================================================================
+   БАЗОВЫЕ СТИЛИ СТРАНИЦЫ И ФОН
+   ========================================================================== */
+html, body {
+    background: radial-gradient(circle at center, #0f172a 0%, #07070a 100%) !important;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: white;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.dashboard-container {
+    max-width: 900px; 
+    margin: 40px auto; 
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.dashboard-title {
+    text-align: left;
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   КНОПКИ И ПАНЕЛЬ НАВИГАЦИИ
+   ========================================================================== */
+.header-panel {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 20px;
+    background-color: transparent;
+}
+
+.btn {
+    display: inline-block;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.profile-btn {
+    padding: 10px 18px;
+    background-color: rgba(10, 10, 15, 0.7); 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+}
+
+.preview-btn {
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 14px;
+}
+
+.preview-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #ffffff;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   АДАПТИВНАЯ СЕТКА И 3D ФЛИП-КАРТОЧКИ (ПРОПОРЦИИ ИГРАЛЬНЫХ КАРТ)
+   ========================================================================== */
+.cards-grid {
+    display: grid;
+    /* Уменьшили минимальную ширину до 180px, чтобы карты оставались вертикально вытянутыми */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+/* Контейнер флипа */
+.flashcard-wrapper {
+    perspective: 1000px;
+    height: 280px; 
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard-wrapper.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+/* Общие стили сторон карточки */
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 4px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 20px;
+    box-sizing: border-box;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    word-break: break-word; 
+}
+
+/* Лицевая сторона */
+.card-front {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 2px solid rgba(38, 230, 255, 0.3);
+    color: #26e6ff;
+}
+
+/* Обратная сторона */
+.card-back {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    border: 2px solid #ff26b9;
+    color: #ff26b9;
+    transform: rotateY(180deg);
+}
+
+/* ==========================================================================
+   КНОПКА УДАЛЕНИЯ КАРТОЧКИ
+   ========================================================================== */
+.delete-card-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 38, 74, 0.15);
+    border: 1px solid #ff264a;
+    color: #ff264a;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 15;
+    transition: all 0.2s ease;
+}
+
+.delete-card-btn:hover {
+    background: #ff264a;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 38, 74, 0.6);
+}
+
+.no-cards {
+    display: none;
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 18px;
+    margin-top: 50px;
+}
+
+/* ==========================================================================
+   АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (Экраны до 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-panel {
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px 10px;
+    }
+
+    .profile-btn, .preview-btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+        padding: 12px;
+    }
+
+    .dashboard-container {
+        margin: 15px auto;
+        padding: 0 15px;
+    }
+
+    .dashboard-title {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr; 
+        gap: 20px;
+    }
+
+    /* На смартфонах ограничиваем ширину, чтобы карточки не растягивались горизонтально на весь дисплей */
+    .flashcard-wrapper {
+        height: 260px; 
+        max-width: 180px; /* Задает идеальный мобильный вертикальный формат */
+        margin: 0 auto;  /* Центрирует карту в ряду */
+    }
+}

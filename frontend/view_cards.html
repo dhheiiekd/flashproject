@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Содержимое колоды - Flashcard Forge</title>
+    <link rel="stylesheet" href="/view_cards.css">
+</head>
+<body>
+
+    <header class="header-panel">
+        <a href="/dashboard" class="btn profile-btn">В меню</a>
+        <a id="backToPreview" href="#" class="btn preview-btn">Назад к вееру</a>
+    </header>
+
+    <main class="dashboard-container">
+        <h1 class="dashboard-title">Карточки в колоде</h1>
+        
+        <div id="cardsGrid" class="cards-grid"></div>
+        
+        <div id="noCardsMessage" class="no-cards">
+            В этой колоде ещё нет карточек. Добавьте их через веер!
+        </div>
+    </main>
+
+    <script src="/view_cards.js"></script>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Кланом</title>
+    <link rel="stylesheet" href="/dashboard.css?v=1">
+    <style>
+        body { 
+            background: #050b14; 
+            color: #fff; 
+            font-family: sans-serif; 
+            padding: 15px; 
+            margin: 0;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        /* Адаптивная шапка */
+        .header-block { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 15px; 
+            margin-bottom: 25px; 
+            gap: 15px;
+        }
+        .header-block h1 { font-size: 1.8rem; margin: 0; }
+        
+        /* Удобная навигация по вкладкам для мобилок: разрешаем горизонтальный скролл без скрытия элементов */
+        .tabs-nav { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid rgba(23, 183, 208, 0.3); 
+            padding-bottom: 10px; 
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tabs-nav::-webkit-scrollbar { display: none; } /* Прячем некрасивый скроллбар на телефонах */
+        
+        .tab-btn { 
+            background: transparent; 
+            border: 1px solid #17b7d0; 
+            color: #17b7d0; 
+            padding: 10px 20px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: all 0.2s; 
+            white-space: nowrap; /* Чтобы текст вкладки не переносился на новую строку */
+            font-size: 0.95rem;
+        }
+        .tab-btn.active, .tab-btn:hover { background: #17b7d0; color: #fff; box-shadow: 0 0 10px rgba(23, 183, 208, 0.5); }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Гибкая форма */
+        .flex-form { display: flex; gap: 10px; margin-top: 10px; }
+        .flex-form input { font-size: 1rem; }
+        
+        /* Сетка колод */
+        .decks-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+        .deck-item { background: rgba(11, 15, 25, 0.9); border: 1px solid rgba(23, 183, 208, 0.2); padding: 15px; border-radius: 6px; display: flex; flex-direction: column; justify-content: space-between; }
+        .deck-item h4 { color: #26e6ff; margin: 0 0 10px 0; font-size: 1.2rem; }
+        .deck-item p { color: #a0a5b5; font-size: 13px; margin: 0 0 15px 0; flex-grow: 1; line-height: 1.4; }
+        
+        .select-deck-btn { background: #17b7d0; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; text-align: center; text-decoration: none; font-weight: bold; font-size: 0.95rem; }
+        .select-deck-btn:hover { background: #26e6ff; }
+        
+        /* Адаптивные таблицы: оборачиваются в контейнер с прокруткой */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+            background: rgba(11, 15, 25, 0.6);
+            border-radius: 6px;
+            border: 1px solid rgba(23, 183, 208, 0.2);
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border: 1px solid rgba(23, 183, 208, 0.1); text-align: left; font-size: 0.95rem; white-space: nowrap; }
+        th { background: rgba(23, 183, 208, 0.1); color: #26e6ff; }
+        
+        .btn-danger { background: #dc3545; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; transition: background 0.2s; font-size: 0.9rem; }
+        .btn-danger:hover { background: #bd2130; }
+        
+        /* Кнопка тотального удаления клана */
+        .btn-delete-clan {
+            background: #7f1d1d;
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+        .btn-delete-clan:hover {
+            background: #b91c1c;
+            color: #fff;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+        }
+
+        /* МЕДИА-ЗАПРОСЫ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+        @media (max-width: 680px) {
+            .header-block {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            #admin-actions .btn-delete-clan {
+                width: 100%;
+                margin-top: 10px;
+                padding: 12px;
+            }
+            .flex-form {
+                flex-direction: column;
+            }
+            .flex-form button {
+                width: 100%;
+                padding: 12px;
+            }
+            .decks-list {
+                grid-template-columns: 1fr;
+            }
+            .card button {
+                width: 100%;
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/decks/public" style="color: #17b7d0; text-decoration: none; display: inline-block; margin-bottom: 10px;">← К списку групп</a>
+        
+        <div class="header-block">
+            <div>
+                <h1 id="groupTitle">🛡️ Загрузка клана...</h1>
+                <p id="groupDesc" style="color: gray; margin: 5px 0 0 0;"></p>
+            </div>
+            <div id="admin-actions"></div>
+        </div>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('decksTab')">📚 Колоды Клана</button>
+            <button class="tab-btn" onclick="switchTab('membersTab')">👥 Участники</button>
+            <button class="tab-btn" onclick="switchTab('progressTab')">📊 Успеваемость студентов</button>
+        </div>
+
+        <div id="decksTab" class="tab-content active">
+            <div class="card" style="background: rgba(11, 15, 25, 0.9); padding: 20px; border-radius: 8px;">
+                <h3>📚 Колоды этого клана</h3>
+                <p style="color: gray; margin-bottom: 15px;">Хотите прикрепить новые учебные материалы? Выберите их из глобальной библиотеки.</p>
+                <button onclick="redirectToSearch()" class="btn" style="margin: 0; background: #28a745; border: none; color: white; padding: 10px 15px; border-radius: 4px; font-weight: bold; cursor: pointer;">🔍 Найти и добавить колоду по названию</button>
+            </div>
+            <div id="groupDecksList" class="decks-list">Загрузка колод...</div>
+        </div>
+
+        <div id="membersTab" class="tab-content">
+            <div class="card" style="background: rgba(11, 15, 25, 0.9); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3>👤 Включить студента в состав по никнейму</h3>
+                <form id="inviteUserForm" class="flex-form">
+                    <input type="text" id="usernameInput" placeholder="Введите точный никнейм друга" required style="flex-grow: 1; padding: 12px; background: #0b0f19; border: 1px solid #17b7d0; color: white; border-radius: 4px;">
+                    <button type="submit" class="btn" style="margin:0; background: #17b7d0; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">Добавить</button>
+                </form>
+            </div>
+            <h3>Состав клана</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Студент</th>
+                            <th>Роль</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody id="membersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="progressTab" class="tab-content">
+            <div class="card" style="background: rgba(11, 15, 25, 0.9); padding: 20px; border-radius: 8px;">
+                <h3>📈 Выберите колоду клана для просмотра ведомости</h3>
+                <select id="progressDeckSelector" onchange="loadDeckProgress()" style="width: 100%; padding: 12px; background: #050b14; border: 1px solid #17b7d0; color: white; border-radius: 4px; font-size: 16px;">
+                    <option value="">-- Выберите привязанную колоду --</option>
+                </select>
+            </div>
+            
+            <div id="progressTableContainer" style="display: none; margin-top: 20px;">
+                <h3>📊 Результаты прохождения колоды</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Студент</th>
+                                <th>Набранные баллы</th>
+                                <th>Всего карточек</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody id="progressTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const groupId = urlParams.get('id');
+
+        if (!groupId) {
+            alert("ID группы не указан в URL!");
+            window.location.href = "/decks/public";
+        }
+
+        function redirectToSearch() {
+            window.location.href = `/decks/search?from_group=${groupId}`;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            // Замена устаревшего глобального event
+            const currentBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
+            if(currentBtn) currentBtn.classList.add('active');
+
+            if (tabId === 'decksTab') loadGroupDecks();
+            if (tabId === 'membersTab') loadGroupMembers();
+            if (tabId === 'progressTab') initProgressTab();
+        }
+
+        async function loadGroupDetails() {
+            const res = await fetch(`/api/groups/details?group_id=${groupId}`);
+            if (res.ok) {
+                const data = await res.json();
+                document.getElementById('groupTitle').innerText = `🛡️ Клан: ${data.name}`;
+                document.getElementById('groupDesc').innerText = data.description || 'Без описания';
+            }
+        }
+
+        async function loadGroupDecks() {
+            const res = await fetch(`/api/groups/decks?group_id=${groupId}`);
+            const list = document.getElementById('groupDecksList');
+            if (!res.ok) { list.innerText = "Ошибка загрузки колод"; return; }
+            
+            const decks = await res.json();
+            list.innerHTML = '';
+            
+            if(!decks || decks.length === 0) {
+                list.innerHTML = '<p style="color:gray;">В этот клан ещё не добавлено ни одной колоды.</p>';
+                return;
+            }
+
+            decks.forEach(d => {
+                list.innerHTML += `
+                    <div class="deck-item">
+                        <div>
+                            <h4>${d.title}</h4>
+                            <p>${d.description || 'Нет описания'}</p>
+                        </div>
+                        <a href="/decks/play?deck_id=${d.id}" class="select-deck-btn">Запустить ковку (Play)</a>
+                    </div>
+                `;
+            });
+        }
+
+        async function loadGroupMembers() {
+            const res = await fetch(`/api/groups/members?group_id=${groupId}`);
+            const tbody = document.getElementById('membersTableBody');
+            if (!res.ok) { tbody.innerHTML = '<tr><td colspan="3">Ошибка загрузки состава</td></tr>'; return; }
+
+            const data = await res.json();
+            tbody.innerHTML = '';
+
+            const adminZone = document.getElementById('admin-actions');
+            if (data.is_creator) {
+                adminZone.innerHTML = `<button class="btn-delete-clan" onclick="deleteCurrentGroup()">💥 Распустить клан</button>`;
+            } else {
+                adminZone.innerHTML = '';
+            }
+
+            data.members.forEach(m => {
+                let actionBtn = '';
+                if (data.is_creator && m.role !== 'admin') {
+                    actionBtn = `<button class="btn-danger" onclick="removeMember(${m.user_id})">Исключить</button>`;
+                } else {
+                    actionBtn = `<span style="color:gray;">Нет прав</span>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${m.username}</strong></td>
+                        <td><span style="color: #26e6ff;">${m.role}</span></td>
+                        <td>${actionBtn}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function deleteCurrentGroup() {
+            if (!confirm("⚠️ ВНИМАНИЕ!\nВы уверены, что хотите полностью удалить и распустить этот клан? Все привязанные колоды будут откреплены, а успеваемость студентов сотрется. Это действие необратимо!")) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('group_id', groupId);
+
+            try {
+                const res = await fetch('/api/groups/delete', { method: 'POST', body: formData });
+                if (res.ok) {
+                    alert("Клан успешно распущен и стерт из базы данных.");
+                    window.location.href = "/decks/public";
+                } else {
+                    alert("Не удалось удалить клан: " + await res.text());
+                }
+            } catch (err) {
+                alert("Ошибка сети. Не удалось связаться с сервером.");
+            }
+        }
+
+        document.getElementById('inviteUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('group_id', groupId);
+            formData.append('username', document.getElementById('usernameInput').value);
+
+            const res = await fetch('/api/groups/invite', { method: 'POST', body: formData });
+            if (res.ok) {
+                alert("Студент успешно добавлен в клан!");
+                document.getElementById('usernameInput').value = '';
+                loadGroupMembers();
+            } else {
+                alert(await res.text());
+            }
+        });
+
+        async function removeMember(userId) {
+            if (!confirm("Вы уверены, что хотите исключить этого студента из клана?")) return;
+            
+            const formData = new FormData();
+            formData.append('group_id', groupId);
+            formData.append('user_id', userId);
+
+            const res = await fetch('/api/groups/remove', { method: 'POST', body: formData });
+            if (res.ok) {
+                alert(await res.text());
+                loadGroupMembers();
+            } else {
+                alert(await res.text());
+            }
+        }
+
+        async function initProgressTab() {
+            const res = await fetch(`/api/groups/decks?group_id=${groupId}`);
+            const selector = document.getElementById('progressDeckSelector');
+            selector.innerHTML = '<option value="">-- Выберите привязанную колоду --</option>';
+            
+            if (res.ok) {
+                const decks = await res.json();
+                decks.forEach(d => {
+                    selector.innerHTML += `<option value="${d.id}">${d.title} (ID: ${d.id})</option>`;
+                });
+            }
+            document.getElementById('progressTableContainer').style.display = 'none';
+        }
+
+        async function loadDeckProgress() {
+            const deckId = document.getElementById('progressDeckSelector').value;
+            const container = document.getElementById('progressTableContainer');
+            const tbody = document.getElementById('progressTableBody');
+            
+            if (!deckId) { container.style.display = 'none'; return; }
+
+            const res = await fetch(`/api/groups/decks/progress?group_id=${groupId}&deck_id=${deckId}`);
+            if (!res.ok) { alert("Не удалось загрузить успеваемость"); return; }
+
+            const progressData = await res.json();
+            tbody.innerHTML = '';
+
+            if(!progressData || progressData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:gray;">В группе нет участников для отображения</td></tr>';
+            } else {
+                progressData.forEach(p => {
+                    const statusIcon = p.completed ? '✅ Пройдено' : '⏳ Не начинал';
+                    const scoreText = p.completed ? `${p.score}` : '0';
+                    const totalText = p.completed ? `${p.total_cards}` : '0';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${p.username}</strong></td>
+                            <td style="color: #26e6ff; font-weight: bold;">${scoreText}</td>
+                            <td>${totalText}</td>
+                            <td>${statusIcon}</td>
+                        </tr>
+                    `;
+                });
+            }
+            container.style.display = 'block';
+        }
+
+        loadGroupDetails();
+        loadGroupDecks();
+        loadGroupMembers(); 
+    </script>
+</body>
+</html>

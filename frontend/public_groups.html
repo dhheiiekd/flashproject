@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кланы</title>
+    <link rel="stylesheet" href="/dashboard.css?v=1">
+    <style>
+        body { 
+            background: #050b14; 
+            color: #fff; 
+            font-family: sans-serif; 
+            padding: 15px; 
+            margin: 0;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        /* Адаптивная шапка: на ПК в строку, на телефонах в столбик */
+        .header-row {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 15px;
+            gap: 15px;
+        }
+        .header-row h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        /* Сетка карточек с автоматической подстройкой под ширину устройства */
+        .groups-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+            margin-top: 25px; 
+        }
+        
+        .group-card { 
+            background: rgba(11, 15, 25, 0.9); 
+            border: 1px solid rgba(23, 183, 208, 0.2); 
+            padding: 20px; 
+            border-radius: 8px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            box-sizing: border-box;
+        }
+        .group-card h3 { color: #26e6ff; margin-top: 0; margin-bottom: 10px; font-size: 1.4rem; }
+        .group-card p { color: #a0a5b5; font-size: 14px; flex-grow: 1; line-height: 1.4; margin-bottom: 20px; }
+        
+        /* Удобная большая кнопка для тач-скринов */
+        .btn-enter { 
+            display: block; 
+            text-align: center; 
+            background: #17b7d0; 
+            color: #fff; 
+            padding: 12px; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            transition: background 0.2s; 
+            font-size: 1rem;
+        }
+        .btn-enter:hover { background: #26e6ff; }
+
+        /* Универсальный класс для обычных кнопок (например, "Создать Клан") */
+        .btn-adaptive {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+        }
+
+        /* Модальное окно: добавляем внутренние отступы, чтобы на смартфонах оно не липло к краям */
+        .modal-overlay {
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 100;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .modal-card {
+            background: #0b0f19; 
+            width: 100%; 
+            max-width: 420px; 
+            padding: 25px; 
+            border-radius: 8px; 
+            border: 1px solid #17b7d0;
+            box-sizing: border-box;
+        }
+
+        /* МЕДИА-ЗАПРОСЫ ДЛЯ СМАРТФОНОВ (экраны меньше 600px) */
+        @media (max-width: 600px) {
+            .header-row {
+                flex-direction: column;
+                align-items: stretch; /* Растягивает кнопку создания на всю ширину */
+                text-align: center;
+            }
+            .header-row button {
+                width: 100%;
+                padding: 14px; /* Увеличиваем область нажатия на телефоне */
+            }
+            .groups-grid {
+                grid-template-columns: 1fr; /* На мобилке строим карточки строго в один столбец */
+                gap: 15px;
+            }
+            .modal-card {
+                padding: 20px 15px;
+            }
+            .modal-card .btn {
+                flex-grow: 1; /* Кнопки "Отмена" и "Создать" делят экран поровну */
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" style="color: #17b7d0; text-decoration: none; font-size: 1.05rem; display: inline-block; margin-bottom: 10px;">← Вернуться в Дашборд</a>
+        
+        <div class="header-row">
+            <h1>🛡️ Ваши Кланы</h1>
+            <button onclick="openCreateModal()" class="btn btn-adaptive" style="margin: 0;">➕ Создать Клан</button>
+        </div>
+
+        <div id="groupsGrid" class="groups-grid">Загрузка ваших кланов...</div>
+    </div>
+
+    <div id="createModal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="margin-top:0; color:#26e6ff; font-size: 1.4rem;"> Создание нового клана</h3>
+            <form id="createGroupForm">
+                <label style="display:block; margin-bottom:8px; color:gray; font-size: 0.95rem;">Название клана:</label>
+                <input type="text" id="groupName" required style="width:100%; padding:12px; background:#050b14; border:1px solid #17b7d0; color:white; border-radius:4px; box-sizing:border-box; margin-bottom:15px; font-size: 1rem;">
+                
+                <label style="display:block; margin-bottom:8px; color:gray; font-size: 0.95rem;">Описание / Цель:</label>
+                <textarea id="groupDesc" rows="3" style="width:100%; padding:12px; background:#050b14; border:1px solid #17b7d0; color:white; border-radius:4px; box-sizing:border-box; margin-bottom:20px; resize:none; font-size: 1rem;"></textarea>
+                
+                <div style="display:flex; gap:10px; justify-content:flex-end;">
+                    <button type="button" onclick="closeCreateModal()" class="btn" style="background:gray; margin:0; padding: 12px 20px;">Отмена</button>
+                    <button type="submit" class="btn" style="margin:0; padding: 12px 20px;">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        async function loadMyGroups() {
+            try {
+                const res = await fetch('/api/groups/my');
+                if (!res.ok) throw new Error("Ошибка сервера");
+                const groups = await res.json();
+                
+                const grid = document.getElementById('groupsGrid');
+                grid.innerHTML = '';
+
+                if (!groups || groups.length === 0) {
+                    grid.innerHTML = '<p style="color:gray; grid-column: 1/-1; text-align: center; margin-top: 20px;">Вы пока не состоите ни в одном клане. Создайте свой или попросите добавить вас по никнейму!</p>';
+                    return;
+                }
+
+                groups.forEach(g => {
+                    grid.innerHTML += `
+                        <div class="group-card">
+                            <div>
+                                <h3>${g.name}</h3>
+                                <p>${g.description || 'Без описания'}</p>
+                            </div>
+                            <a href="/decks/group-details?id=${g.id}" class="btn-enter">Войти в Клан →</a>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                document.getElementById('groupsGrid').innerText = 'Не удалось загрузить группы.';
+            }
+        }
+
+        function openCreateModal() { document.getElementById('createModal').style.display = 'flex'; }
+        function closeCreateModal() { document.getElementById('createModal').style.display = 'none'; }
+
+        document.getElementById('createGroupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('name', document.getElementById('groupName').value);
+            formData.append('description', document.getElementById('groupDesc').value);
+
+            const res = await fetch('/api/groups/create', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (res.ok) {
+                alert("Клан успешно создан!");
+                closeCreateModal();
+                document.getElementById('createGroupForm').reset();
+                loadMyGroups();
+            } else {
+                alert(await res.text());
+            }
+        });
+
+        loadMyGroups();
+    </script>
+</body>
+</html>
