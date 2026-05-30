@@ -26,7 +26,8 @@ INSERT INTO categories (name) VALUES
 ('Физика и Космология'),
 ('Математика'),
 ('История и Гуманитарные науки')
-ON CONFLICT (name) DO NOTHING;```
+ON CONFLICT (name) DO NOTHING;
+```
 
 
 ### 2. Создание файла конфигурации
